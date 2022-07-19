@@ -28,8 +28,8 @@ class Todo {
     return this.done;
   }
 
-  forEach() {
-    
+  getTitle() {
+    return this.title;
   }
 }
 
@@ -68,12 +68,6 @@ class TodoList {
     return this.todos[index];
   }
 
-  _validateIndex(index) { // _ in name suggests a "private" method
-    if (!(index in this.todos)) {
-      throw new ReferenceError(`invalid index: ${index}`);
-    }
-  }
-
   markDoneAt(index) {
     this.itemAt(index).markDone();
   }
@@ -104,6 +98,57 @@ class TodoList {
     let list = this.todos.map(todo => todo.toString()).join(`\n`);
     return `${title}\n${list}`;
   }
+
+  forEach(callback) {
+    this.todos.forEach(callback);
+  }
+
+  filter(callback) {
+    let selectedTodos = new TodoList(this.title); // title is same as list
+    this.forEach(todo => {
+      if (callback(todo)) {
+        selectedTodos.add(todo);
+      }
+    });
+    return selectedTodos;
+  }
+
+  findByTitle(title) {
+    return this.filter(todo => todo.getTitle() === title).first();
+  }
+
+  allDone() {
+    return this.filter(todo => todo.isDone());
+  }
+
+  allNotDone() {
+    return this.filter(todo => !todo.isDone());
+  }
+
+  markDone(title) {
+    let todo = this.findByTitle(title);
+    if (todo) {
+      todo.markDone();
+    }
+  }
+
+  markAllDone() {
+    this.forEach(todo => todo.markDone());
+  }
+
+  markAllUndone() {
+    this.forEach(todo => todo.markUndone());
+  }
+
+  toArray() {
+    return this.todos.slice();
+  }
+
+  _validateIndex(index) { // _ in name suggests a "private" method
+    if (!(index in this.todos)) {
+      throw new ReferenceError(`invalid index: ${index}`);
+    }
+  }
 }
 // -----------------------------Test Code -----------------------------
 
@@ -123,5 +168,27 @@ list.add(todo3);
 list.add(todo4);
 list.add(todo5);
 list.add(todo6);
+todo1.markDone();
+todo5.markDone();
 
-list.forEach(todo => console.log(todo.toString()));
+// console.log(list.filter(todo => todo.isDone()).first());
+// // => Todo { title: 'Buy milk', done: true }
+
+// console.log(list.findByTitle("Feed the cats"));
+// // Todo { title: 'Feed the cats', done: true }
+
+// console.log(list.allDone());
+
+// console.log(list.allNotDone());
+
+// list.markDone("Clean room");
+// list.markDone("wut");
+// console.log(list.allDone());
+
+// list.markAllDone();
+// console.log(list);
+
+// list.markAllUndone();
+// console.log(list);
+
+// console.log(list.toArray());
