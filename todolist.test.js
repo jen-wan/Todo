@@ -1,3 +1,4 @@
+
 const Todo = require('./todo');
 const TodoList = require('./todolist');
 
@@ -27,20 +28,20 @@ describe('TodoList', () => {
     expect(list.toArray()).toEqual([todo1, todo2, todo3]);
   });
 
-  test('calling first returns the first todo item', () => {
+  test('calling first returns the first todo object', () => {
     expect(list.first()).toEqual(todo1);
   });
 
-  test('calling last returns the last todo item', () => {
+  test('calling last returns the last todo object', () => {
     expect(list.last()).toEqual(todo3);
   });
 
-  test('shift() removes and returns the first item in the list', () => {
+  test('shift() removes and returns the first todo object in the list', () => {
     expect(list.shift()).toEqual(todo1);
     expect(list.toArray()).toEqual([todo2, todo3]); // Notice how we use toArray so we can compare the lists.
   });
 
-  test('pop() removes and returns the last item in the list', () => {
+  test('pop() removes and returns the todo object in the list', () => {
     expect(list.pop()).toEqual(todo3);
     expect(list.toArray()).toEqual([todo1, todo2]);
   });
@@ -88,6 +89,11 @@ describe('TodoList', () => {
   test('markAllDone() marks all todos as done in list', () => {
     list.markAllDone();
     expect(list.isDone()).toBe(true);
+  });
+
+  test('markAllUndone() marks all todos as undone in list', () => {
+    list.markAllUndone();
+    expect(list.isDone()).toBe(false);
   });
 
   test('removeAt() removes todo at given index ' +
@@ -138,5 +144,32 @@ describe('TodoList', () => {
     todo3.markDone();
     let newList = list.filter(todo => todo.isDone());
     expect(newList.toArray()).toEqual([todo1, todo3]);
+  });
+
+  test(`findByTitle(title) returns the first todo object of new 
+        list of todos with specific title`, () => {
+    expect(list.findByTitle('Clean room')).toEqual(todo2);
+  });
+
+  test('allDone() filters todos that are done and returns new list', () => {
+    todo1.markDone();
+    todo3.markDone();
+    expect(list.allDone()).toEqual({title: "Today's Todos", "todos": [todo1, todo3]});
+  });
+
+  test(`allNotDone filters todos that aren't done
+        and returns new list`, () => {
+    todo1.markDone();
+    todo3.markDone();
+    expect(list.allNotDone()).toEqual({title: "Today's Todos", "todos": [todo2]});
+  });
+
+
+  test('markDone(title) marks todo with title as done', () => {
+    list.markDone('Buy milk');
+    list.markDone('Clean room');
+    list.markDone('Go to the gym');
+    list.markDone('HEY YOU');
+    expect(list.isDone()).toBe(true);
   });
 });
