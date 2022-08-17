@@ -90,11 +90,54 @@ describe('TodoList', () => {
     expect(list.isDone()).toBe(true);
   });
 
-  test('removeAt() removes todo at given index' +
-  'and returns list as an array', () => {
+  test('removeAt() removes todo at given index ' +
+  'and returns array of deleted elements', () => {
     expect(() => list.removeAt(3)).toThrow(ReferenceError);
 
-    expect(list.removeAt(0)).toEqual([todo2, todo3]);
+    expect(list.removeAt(0)).toEqual([todo1]);
+    expect(list.toArray()).toEqual([todo2, todo3]);
+  });
 
-  })
+  test('toString returns string representation of the list', () => {
+    let string = `---- Today's Todos ----
+[ ] Buy milk
+[ ] Clean room
+[ ] Go to the gym`;
+
+    expect(list.toString()).toBe(string);
+  });
+
+  test('correct string when one todo is done', () => {
+    list.markDoneAt(0);
+
+    let string = `---- Today's Todos ----
+[X] Buy milk
+[ ] Clean room
+[ ] Go to the gym`;
+    expect(list.toString()).toBe(string);
+  });
+
+  test('correct string when all todos are done', () => {
+    list.markAllDone();
+
+    let string = `---- Today's Todos ----
+[X] Buy milk
+[X] Clean room
+[X] Go to the gym`;
+
+    expect(list.toString()).toBe(string);
+  });
+
+  test('forEach(callback) iterates over all elements in list', () => {
+    list.forEach(todo => todo.markDone());
+    expect(list.isDone()).toBe(true);
+  });
+
+  test('filter returns new TodoList object with filtered todos', () => {
+    todo1.markDone();
+    todo3.markDone();
+    let newList = list.filter(todo => todo.isDone());
+    expect(newList.toArray()).toEqual([todo1, todo3]);
+  });
+
 });

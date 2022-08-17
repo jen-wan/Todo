@@ -57,12 +57,12 @@ class TodoList {
 
   removeAt(index) {
     this._validateIndex(index);
-    return this.todos.splice(index, 1);
+    return this.todos.splice(index, 1); // returns array containing deleted elements
   }
 
   toString() {
     let title = `---- ${this.title} ----`;
-    let list = this.todos.map(todo => todo.toString()).join("\n");
+    let list = this.todos.map(todo => todo.toString()).join("\n"); //toString is a method on todo object
     return `${title}\n${list}`;
   }
 
