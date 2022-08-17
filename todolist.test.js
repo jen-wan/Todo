@@ -139,5 +139,4 @@ describe('TodoList', () => {
     let newList = list.filter(todo => todo.isDone());
     expect(newList.toArray()).toEqual([todo1, todo3]);
   });
-
 });
