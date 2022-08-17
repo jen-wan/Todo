@@ -121,12 +121,13 @@ class TodoList {
 
 module.exports = TodoList;
 
-todo1 = new Todo('Buy milk');
-todo2 = new Todo('Clean room');
-todo3 = new Todo('Go to the gym');
+// some test code
+// todo1 = new Todo('Buy milk');
+// todo2 = new Todo('Clean room');
+// todo3 = new Todo('Go to the gym');
 
-list = new TodoList("Today's Todos");
-list.add(todo1);
-list.add(todo2);
-list.add(todo3);
-console.log(list);
+// list = new TodoList("Today's Todos");
+// list.add(todo1);
+// list.add(todo2);
+// list.add(todo3);
+// console.log(list);
